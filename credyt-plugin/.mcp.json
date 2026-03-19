@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "credyt": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://mcp.credyt.ai",
+        "--header",
+        "Authorization:${CREDYT_API_KEY}"
+      ],
+      "env": {
+        "CREDYT_API_KEY": "Bearer your_api_key"
+      }
+    }
+  }
+}

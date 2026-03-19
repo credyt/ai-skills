@@ -1,0 +1,10 @@
+{
+  "name": "credyt",
+  "description": "Set up and integrate Credyt — real-time billing infrastructure for AI products. Guides you through pricing discovery, product configuration, verification, and code integration.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Credyt"
+  },
+  "homepage": "https://credyt.ai",
+  "repository": "https://github.com/credyt/claude-plugin"
+}

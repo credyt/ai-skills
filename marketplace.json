@@ -1,0 +1,8 @@
+{
+  "plugins": [
+    {
+      "name": "credyt",
+      "path": "credyt-plugin"
+    }
+  ]
+}
