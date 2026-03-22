@@ -1,0 +1,14 @@
+{
+  "name": "credyt-marketplace",
+  "owner": {
+    "name": "Credyt"
+  },
+  "plugins": [
+    {
+      "name": "credyt",
+      "source": "./credyt-plugin",
+      "description": "Set up and integrate Credyt — real-time monetization infrastructure for AI products.",
+      "version": "1.0.0"
+    }
+  ]
+}
