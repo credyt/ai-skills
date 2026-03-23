@@ -8,7 +8,13 @@ Get the user connected to Credyt so they can use `/credyt:setup`, `/credyt:verif
 
 ## Step 1: Check for API key in the environment
 
-Check if `CREDYT_API_KEY` is set in the current environment.
+Check if `CREDYT_API_KEY` is set in the current environment by running:
+
+```bash
+test -n "$CREDYT_API_KEY" && echo "set" || echo "not set"
+```
+
+**Never** echo or print the actual API key value to the terminal.
 
 If it **is** set, skip directly to **Step 3: Verify the MCP connection**.
 
@@ -100,8 +106,10 @@ If the MCP call failed or the tool isn't available, help the user troubleshoot:
 
 > "The MCP connection failed. A few things to check:
 >
-> - Is `CREDYT_API_KEY` set in your environment? Run `echo $CREDYT_API_KEY` to verify.
-> - Does the value start with `Bearer key_...`? The `Bearer ` prefix is required.
 > - Have you restarted Claude Code since setting the variable?
+> - Check that `CREDYT_API_KEY` is present in your settings file (`~/.claude/settings.json` or `.claude/settings.local.json`) under the `env` block.
+> - The value should be in the format `Bearer key_...` — the `Bearer ` prefix is required.
 >
-> Once you've checked these, run `/credyt:init` again."
+> Would you like me to check the settings files for you, or would you prefer to re-enter your API key?"
+
+**Never** echo or print the API key value to the terminal. If the user wants to re-enter their key, go back to **Step 2a**. If they want you to check the files, read the relevant settings file and confirm whether `CREDYT_API_KEY` is present and correctly formatted (without outputting the full key — just confirm the format looks right, e.g. "starts with `Bearer key_` and is N characters long").

@@ -1,7 +1,7 @@
 {
   "name": "credyt",
   "description": "Set up and integrate Credyt — real-time billing infrastructure for AI products. Guides you through pricing discovery, product configuration, verification, and code integration.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "Credyt"
   },
