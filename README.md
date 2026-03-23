@@ -45,7 +45,7 @@ The plugin also connects to the **Credyt MCP server** (`mcp.credyt.ai`), which e
 }
 ```
 
-This file is git-ignored by default, so each developer on a team can set their own key without it ending up in source control.
+Claude Code automatically adds this file to `.gitignore`, so each developer on a team can set their own key without it ending up in source control.
 
 **Claude Desktop** — open Settings → Developer → Edit config and replace `your_api_key` in the Credyt entry:
 
