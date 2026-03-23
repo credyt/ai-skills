@@ -7,8 +7,7 @@
     {
       "name": "credyt",
       "source": "./claude-plugins/credyt",
-      "description": "Set up and integrate Credyt — real-time monetization infrastructure for AI products.",
-      "version": "1.0.0"
+      "description": "Set up and integrate Credyt — real-time monetization infrastructure for AI products."
     }
   ]
 }
