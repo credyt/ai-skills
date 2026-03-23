@@ -1,6 +1,6 @@
 # Credyt AI Skills
 
-Set up and integrate [Credyt](https://credyt.ai) — real-time billing infrastructure for AI products — directly from your AI agent. Three skills guide you from first configuration through production integration.
+Set up and integrate [Credyt](https://credyt.ai) — real-time monetization infrastructure for AI products — directly from your AI agent. Three skills guide you from first configuration through production integration.
 
 ## Quick install (any AI agent)
 
@@ -20,11 +20,11 @@ The skills use the Credyt MCP server. Connect it in your tool at `https://mcp.cr
 
 ### Available skills
 
-| Skill | What it does |
-|-------|--------------|
-| `setup` | Discovers your billing model, configures products, assets, and pricing via MCP, and verifies the full billing cycle |
-| `verify` | Tests the billing cycle end-to-end for a specific product |
-| `integrate` | Wires Credyt billing into your application code |
+| Skill       | What it does                                                                                                        |
+| ----------- | ------------------------------------------------------------------------------------------------------------------- |
+| `setup`     | Discovers your pricing model, configures products, assets, and pricing via MCP, and verifies the full billing cycle |
+| `verify`    | Tests the billing cycle end-to-end for a specific product                                                           |
+| `integrate` | Wires Credyt billing into your application code                                                                     |
 
 ---
 
@@ -43,12 +43,12 @@ The skills are identical — the plugin adds MCP auto-configuration and a guided
 
 The plugin also connects to the **Credyt MCP server** (`mcp.credyt.ai`), which exposes the Credyt API as tools Claude can call directly — creating products, sending events, checking wallets, and more.
 
-| Type | Name | What it does |
-|------|------|--------------|
-| Command | `/credyt:init` | Gets you connected to Credyt. Creates an account, configures the API key, and verifies the MCP connection. Run this first. |
-| Skill | `/credyt:setup` | Discovers your billing model through a guided conversation, then configures products, assets, and pricing in Credyt via MCP. Runs a full end-to-end billing cycle verification automatically. |
-| Skill | `/credyt:verify` | Tests the full billing cycle for a specific product — creates a test customer, funds their wallet, sends a usage event, and confirms the fee was charged correctly. Use this after making changes or to troubleshoot. |
-| Skill | `/credyt:integrate` | Wires Credyt into your application code. Adds customer creation at signup, usage event tracking, balance checks, cost tracking, billing portal links, and balance display. |
+| Type    | Name                | What it does                                                                                                                                                                                                          |
+| ------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Command | `/credyt:init`      | Gets you connected to Credyt. Creates an account, configures the API key, and verifies the MCP connection. Run this first.                                                                                            |
+| Skill   | `/credyt:setup`     | Discovers your billing model through a guided conversation, then configures products, assets, and pricing in Credyt via MCP. Runs a full end-to-end billing cycle verification automatically.                         |
+| Skill   | `/credyt:verify`    | Tests the full billing cycle for a specific product — creates a test customer, funds their wallet, sends a usage event, and confirms the fee was charged correctly. Use this after making changes or to troubleshoot. |
+| Skill   | `/credyt:integrate` | Wires Credyt into your application code. Adds customer creation at signup, usage event tracking, balance checks, cost tracking, billing portal links, and balance display.                                            |
 
 ### Installation
 
@@ -99,29 +99,6 @@ To persist across sessions, add the line to your shell profile and run `source ~
 
 </details>
 
-**Claude Desktop** — open Settings → Developer → Edit config and replace `your_api_key` in the Credyt entry:
-
-```json
-{
-  "mcpServers": {
-    "credyt": {
-      "command": "npx",
-      "args": [
-        "mcp-remote",
-        "https://mcp.credyt.ai",
-        "--header",
-        "Authorization:${CREDYT_API_KEY}"
-      ],
-      "env": {
-        "CREDYT_API_KEY": "Bearer sk_your_api_key_here"
-      }
-    }
-  }
-}
-```
-
-Restart Claude Desktop after saving.
-
 #### 3. Install the plugin
 
 **From GitHub** — run these two commands inside Claude Code:
@@ -167,6 +144,39 @@ Wire billing into your app code:
 ```
 /credyt:integrate
 ```
+
+---
+
+## Claude Desktop
+
+Claude Desktop connects to the Credyt MCP server directly — no plugin system, no auto-configuration. It works well for managing an existing Credyt setup conversationally: querying recent activity, making ad-hoc price changes, viewing customer and wallet information, and similar tasks.
+
+The guided skills (`setup`, `verify`, `integrate`) can also be used in Claude Desktop, but they must be uploaded manually — attach the relevant `SKILL.md` file or paste its contents into the conversation.
+
+### Connect the MCP server
+
+Open Settings → Developer → Edit config and add the Credyt entry:
+
+```json
+{
+  "mcpServers": {
+    "credyt": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://mcp.credyt.ai",
+        "--header",
+        "Authorization:${CREDYT_API_KEY}"
+      ],
+      "env": {
+        "CREDYT_API_KEY": "Bearer sk_your_api_key_here"
+      }
+    }
+  }
+}
+```
+
+Restart Claude Desktop after saving.
 
 ---
 
