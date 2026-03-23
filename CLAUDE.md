@@ -6,14 +6,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Credyt AI Skills — skill definitions for setting up, verifying, and integrating [Credyt](https://credyt.ai) real-time billing infrastructure into AI products. Skills work with any AI agent via skills.sh, and are also bundled as a Claude Code plugin with MCP auto-configuration.
+Credyt AI Skills — skill definitions for setting up, verifying, and integrating [Credyt](https://credyt.ai) real-time monetization infrastructure into AI products. Skills work with any AI agent via skills.sh, and are also bundled as a Claude Code plugin with MCP auto-configuration.
 
 ## Repository Structure
 
 This is a **pure skill scaffold** — no build system, no tests, no application code. The repo contains only skill definitions (Markdown files), plugin metadata, and MCP configuration.
 
 - `skills/` — Shared skill definitions (the single source of truth):
-  - `setup/SKILL.md` — Guided billing model discovery and product configuration
+  - `setup/SKILL.md` — Guided pricing model discovery and product configuration
   - `verify/SKILL.md` — End-to-end billing cycle test
   - `integrate/SKILL.md` — Wire Credyt into application code
 - `claude-plugins/credyt/` — Claude Code plugin:
