@@ -6,7 +6,7 @@
   "plugins": [
     {
       "name": "credyt",
-      "source": "./credyt-plugin",
+      "source": ".",
       "description": "Set up and integrate Credyt — real-time monetization infrastructure for AI products.",
       "version": "1.0.0"
     }

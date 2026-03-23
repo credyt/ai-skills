@@ -72,7 +72,7 @@ git clone https://github.com/credyt/ai-skills
 Then start Claude Code with the plugin loaded:
 
 ```bash
-claude --plugin-dir ./ai-skills/credyt-plugin
+claude --plugin-dir ./ai-skills
 ```
 
 ### 4. Verify the connection
