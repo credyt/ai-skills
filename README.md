@@ -23,13 +23,44 @@ The plugin also connects to the **Credyt MCP server** (`mcp.credyt.ai`), which e
 
 ### 2. Set the API key
 
-**Claude Code** — add to your shell config (`.zshrc`, `.bashrc`, etc.):
+**Claude Code** — run `/credyt:init` after installing the plugin. It will guide you through entering your API key and verify the MCP connection is working.
+
+<details>
+<summary>Manual setup</summary>
+
+Add the key to a Claude settings file so it's available to the MCP server.
+
+**Option 1 — Global (all projects):** Add to `~/.claude/settings.json`:
+
+```json
+{
+  "env": {
+    "CREDYT_API_KEY": "Bearer sk_your_api_key_here"
+  }
+}
+```
+
+**Option 2 — Project-scoped (not checked into source control):** Add to `.claude/settings.local.json` in your project directory:
+
+```json
+{
+  "env": {
+    "CREDYT_API_KEY": "Bearer sk_your_api_key_here"
+  }
+}
+```
+
+Claude Code automatically adds this file to `.gitignore`, so each developer on a team can set their own key without it ending up in source control.
+
+**Option 3 — Terminal / shell profile:** Export the variable in your current session or add it to your shell profile (`~/.zshrc`, `~/.bashrc`, etc.):
 
 ```bash
 export CREDYT_API_KEY="Bearer sk_your_api_key_here"
 ```
 
-Restart your terminal (or run `source ~/.zshrc`) so the variable is available when Claude Code starts.
+To persist across sessions, add the line to your shell profile and run `source ~/.zshrc` (or restart your terminal).
+
+</details>
 
 **Claude Desktop** — open Settings → Developer → Edit config and replace `your_api_key` in the Credyt entry:
 
@@ -75,9 +106,9 @@ Then start Claude Code with the plugin loaded:
 claude --plugin-dir ./ai-skills/credyt-plugin
 ```
 
-### 4. Verify the connection
+### 4. Connect and verify
 
-Run `/credyt:init` in Claude Code. It will confirm the MCP is connected and walk you through any remaining setup.
+Run `/credyt:init` in Claude Code. It will guide you through setting your API key (if you haven't already), confirm the MCP is connected, and walk you through any remaining setup.
 
 ## Usage
 
