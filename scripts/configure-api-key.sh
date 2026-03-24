@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Configure CREDYT_API_KEY in a Claude Code settings file.
 #
-# Usage: configure-api-key.sh --key <api-key> --target <settings-file> [--force]
+# Usage: configure-api-key.sh --key <api-key> [--target <global|project|path>] [--force]
+#
+# If --target is omitted the script prompts the user interactively.
 #
 # Exit codes:
 #   0  Key was set successfully
@@ -19,10 +21,12 @@ FORCE=false
 
 usage() {
   cat >&2 <<'EOF'
-Usage: configure-api-key.sh --key <api-key> --target <path> [--force]
+Usage: configure-api-key.sh --key <api-key> [--target <global|project|path>] [--force]
 
   --key     Credyt API key. Accepts "key_..." or pre-prefixed "Bearer key_..."
-  --target  Path to Claude Code settings file (e.g. ~/.claude/settings.json)
+  --target  Where to save: "global" (~/.claude/settings.json),
+            "project" (.claude/settings.local.json), or an explicit file path.
+            If omitted, the script will prompt interactively.
   --force   Overwrite an existing CREDYT_API_KEY without confirmation
   --help    Show this message
 EOF
@@ -38,10 +42,23 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [[ -z "$KEY" || -z "$TARGET" ]]; then
-  echo "Error: --key and --target are required" >&2
+if [[ -z "$KEY" ]]; then
+  echo "Error: --key is required" >&2
   usage
   exit 2
+fi
+
+# Prompt interactively when --target is not supplied
+if [[ -z "$TARGET" ]]; then
+  echo "Where would you like to save the API key?" >&2
+  echo "  1) Global — ~/.claude/settings.json (all projects)" >&2
+  echo "  2) Project — .claude/settings.local.json (this project only, gitignored)" >&2
+  read -r -p "Enter 1 or 2: " choice </dev/tty
+  case "$choice" in
+    1) TARGET="global" ;;
+    2) TARGET="project" ;;
+    *) echo "Invalid choice: $choice" >&2; exit 2 ;;
+  esac
 fi
 
 # Resolve named targets to their canonical paths

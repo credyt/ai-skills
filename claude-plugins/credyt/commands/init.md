@@ -38,48 +38,33 @@ Once received, normalise the key:
 - If it starts with `key_`, prepend `Bearer ` to get `Bearer key_...`
 - If it already starts with `Bearer `, use it as-is
 
-### 2b: Choose where to save the key
+### 2b: Write the key to the settings file
 
-Ask the user:
-
-> "Where would you like to save the API key?
->
-> 1. **Global** — `~/.claude/settings.json` (available in all projects)
-> 2. **Project** — `.claude/settings.local.json` (this project only, gitignored)
->
-> Reply with **1** or **2**:"
-
-Wait for their choice. Map it to a named target:
-- Choice 1: `global`
-- Choice 2: `project`
-
-### 2c: Write the key to the settings file
-
-Run the configuration script:
+Run the configuration script — it will prompt the user to choose between global and project settings:
 
 ```bash
-./scripts/configure-api-key.sh --key "<normalised key>" --target "<global|project>"
+./scripts/configure-api-key.sh --key "<normalised key>"
 ```
 
 The script handles all cases safely: creating the file, merging into an existing `env` block, and avoiding overwriting an existing key.
 
-**If the script exits with code 0** — the key was written. Proceed to step 2d.
+**If the script exits with code 0** — the key was written. Proceed to step 2c.
 
 **If the script exits with code 1** — the key is already set. Confirm with the user:
 
 > "A `CREDYT_API_KEY` is already set in that file. Would you like to overwrite it? (yes/no)"
 
-If yes, re-run with `--force`:
+If yes, re-run with `--force` (pass the `target` value from the first run's JSON output to skip re-prompting):
 
 ```bash
-./scripts/configure-api-key.sh --key "<normalised key>" --target "<global|project>" --force
+./scripts/configure-api-key.sh --key "<normalised key>" --target "<target from script output>" --force
 ```
 
-If no, proceed to step 2d using the existing key.
+If no, proceed to step 2c using the existing key.
 
 **If the script exits with code 2** — something went wrong (jq not installed, invalid JSON in the existing file, etc.). The script's stdout will explain the error. Share it with the user and help them resolve it before retrying.
 
-### 2d: Tell the user to restart
+### 2c: Tell the user to restart
 
 > "Your API key has been saved to `<target from script output>`. **Please restart Claude Code** for the environment variable to take effect, then run `/credyt:init` again to complete setup."
 
