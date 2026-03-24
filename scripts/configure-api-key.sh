@@ -44,6 +44,12 @@ if [[ -z "$KEY" || -z "$TARGET" ]]; then
   exit 2
 fi
 
+# Resolve named targets to their canonical paths
+case "$TARGET" in
+  global)  TARGET="~/.claude/settings.json" ;;
+  project) TARGET=".claude/settings.local.json" ;;
+esac
+
 # Normalise: ensure Bearer prefix
 if [[ "$KEY" != "Bearer "* ]]; then
   KEY="Bearer $KEY"

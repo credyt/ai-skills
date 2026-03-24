@@ -49,16 +49,16 @@ Ask the user:
 >
 > Reply with **1** or **2**:"
 
-Wait for their choice and resolve the target file path:
-- Choice 1: `~/.claude/settings.json`
-- Choice 2: `.claude/settings.local.json` (relative to the current working directory)
+Wait for their choice. Map it to a named target:
+- Choice 1: `global`
+- Choice 2: `project`
 
 ### 2c: Write the key to the settings file
 
 Run the configuration script:
 
 ```bash
-./scripts/configure-api-key.sh --key "<normalised key>" --target "<target path>"
+./scripts/configure-api-key.sh --key "<normalised key>" --target "<global|project>"
 ```
 
 The script handles all cases safely: creating the file, merging into an existing `env` block, and avoiding overwriting an existing key.
@@ -72,7 +72,7 @@ The script handles all cases safely: creating the file, merging into an existing
 If yes, re-run with `--force`:
 
 ```bash
-./scripts/configure-api-key.sh --key "<normalised key>" --target "<target path>" --force
+./scripts/configure-api-key.sh --key "<normalised key>" --target "<global|project>" --force
 ```
 
 If no, proceed to step 2d using the existing key.
@@ -81,7 +81,7 @@ If no, proceed to step 2d using the existing key.
 
 ### 2d: Tell the user to restart
 
-> "Your API key has been saved to `<file path>`. **Please restart Claude Code** for the environment variable to take effect, then run `/credyt:init` again to complete setup."
+> "Your API key has been saved to `<target from script output>`. **Please restart Claude Code** for the environment variable to take effect, then run `/credyt:init` again to complete setup."
 
 **Stop here.** The env var won't be available until restart, so do not proceed to MCP verification.
 
