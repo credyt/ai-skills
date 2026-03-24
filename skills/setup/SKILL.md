@@ -138,69 +138,9 @@ After all products are configured, automatically run a full billing cycle test. 
 
 > "Now let me verify everything works end-to-end by running a test billing cycle..."
 
-Run the verification against each product that was created or modified in this session. For each product:
+Run the verification against each product that was created or modified in this session. For each product, follow the six-step procedure in `skills/verify/references/procedure.md`.
 
-### Step 1: Create a test customer
-
-Use `credyt:create_customer` with:
-- Name: "Verification Test Customer"
-- External ID: a unique value like "verify_test_{timestamp}"
-- Subscribe to the product being tested
-
-Record the customer ID.
-
-### Step 2: Check starting balance
-
-Use `credyt:get_wallet` to confirm the wallet exists and the balance is zero.
-
-### Step 3: Fund the wallet
-
-Use `credyt:create_adjustment` to add test funds in the same asset the product charges in. Add enough to cover a few test events (e.g., $10.00 USD or 200 credits).
-
-- `reason`: "gift"
-- `description`: "Verification test funding"
-- `transaction_id`: A unique UUID
-
-Use `credyt:get_wallet` to confirm the balance updated.
-
-### Step 4: Send a test usage event
-
-Use `credyt:submit_events` to send one realistic event matching the product's configuration:
-
-- For **unit-based** products: a single event with the correct event_type
-- For **volume-based** products: include the volume field with a test quantity
-- For **dimensional** products: include dimension values
-
-Use a unique UUID for the event ID. Record it.
-
-### Step 5: Verify fees were generated
-
-Use `credyt:get_event` with the event ID. Check that fees were generated and the amount matches the expected price.
-
-### Step 6: Verify balance changed
-
-Use `credyt:get_wallet` to confirm the balance decreased by exactly the expected fee amount.
-
-### Report results
-
-Present a clear summary:
-
-> **Verification — [Product Name]**
->
-> | Step | Result | Details |
-> |------|--------|---------|
-> | Create test customer | ✓ PASS | Customer ID: cust_xxx |
-> | Check starting balance | ✓ PASS | Balance: $0.00 |
-> | Fund wallet | ✓ PASS | Added $10.00, balance: $10.00 |
-> | Send test event | ✓ PASS | Event ID: evt_xxx |
-> | Verify fees | ✓ PASS | Fee: $2.50 (expected: $2.50) |
-> | Verify balance | ✓ PASS | Balance: $7.50 (expected: $7.50) |
->
-> **Result: ALL PASSED** ✓
-
-If any step fails, explain what went wrong and how to fix it. Help them fix the issue, then re-run the verification for that product.
-
-Note about the test customer:
+If any step fails, explain what went wrong and help fix it, then re-run the verification for that product.
 
 > "The test customer will stay in your account — since you're in test mode, this won't affect anything."
 

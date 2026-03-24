@@ -50,39 +50,34 @@ Ask the user:
 > Reply with **1** or **2**:"
 
 Wait for their choice and resolve the target file path:
-- Choice 1: `~/.claude/settings.json` (expand `~` to the user's home directory)
+- Choice 1: `~/.claude/settings.json`
 - Choice 2: `.claude/settings.local.json` (relative to the current working directory)
 
 ### 2c: Write the key to the settings file
 
-Read the target settings file:
+Run the configuration script:
 
-- **File does not exist** — create it with:
-  ```json
-  {
-    "env": {
-      "CREDYT_API_KEY": "Bearer key_..."
-    }
-  }
-  ```
+```bash
+./scripts/configure-api-key.sh --key "<normalised key>" --target "<target path>"
+```
 
-- **File exists, no `env` block** — parse the JSON and add an `env` key:
-  ```json
-  {
-    "env": {
-      "CREDYT_API_KEY": "Bearer key_..."
-    }
-  }
-  ```
+The script handles all cases safely: creating the file, merging into an existing `env` block, and avoiding overwriting an existing key.
 
-- **File exists, `env` block exists, no `CREDYT_API_KEY`** — merge the key into the existing `env` block without modifying any other keys.
+**If the script exits with code 0** — the key was written. Proceed to step 2d.
 
-- **File exists, `CREDYT_API_KEY` already present** — before writing, confirm with the user:
-  > "A `CREDYT_API_KEY` is already set in that file. Would you like to overwrite it? (yes/no)"
+**If the script exits with code 1** — the key is already set. Confirm with the user:
 
-  If they say no, keep the existing value and continue. If yes, overwrite with the new key.
+> "A `CREDYT_API_KEY` is already set in that file. Would you like to overwrite it? (yes/no)"
 
-Write the updated JSON back to the file, preserving formatting as much as possible (2-space indentation).
+If yes, re-run with `--force`:
+
+```bash
+./scripts/configure-api-key.sh --key "<normalised key>" --target "<target path>" --force
+```
+
+If no, proceed to step 2d using the existing key.
+
+**If the script exits with code 2** — something went wrong (jq not installed, invalid JSON in the existing file, etc.). The script's stdout will explain the error. Share it with the user and help them resolve it before retrying.
 
 ### 2d: Tell the user to restart
 
