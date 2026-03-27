@@ -43,13 +43,11 @@ Resolve the target path based on the user's choice:
 - **Global** → `~/.claude/settings.json`
 - **Project** → `.claude/settings.local.json`
 
-Normalize the key — if it does not start with `Bearer `, prepend `Bearer `.
-
 **Never** echo or print the API key value to the terminal.
 
 #### If the file does not exist
 
-Create the parent directory, then write a new settings file. Substitute the real normalized key value — do not write the literal placeholder:
+Create the parent directory, then write a new settings file. Substitute the real key value — do not write the literal placeholder:
 
 ```bash
 mkdir -p <parent-directory>
@@ -60,7 +58,7 @@ Then write a new file at `<target-path>` using the Write tool with this content:
 ```json
 {
   "env": {
-    "CREDYT_API_KEY": "<normalized-key>"
+    "CREDYT_API_KEY": "<key>"
   }
 }
 ```
@@ -78,7 +76,7 @@ If **already set**, ask the user whether they want to overwrite it. If they decl
 If **not set** (or user confirms overwrite), merge the key into the existing file using `jq`, preserving all other settings:
 
 ```bash
-jq --arg key "<normalized-key>" '.env.CREDYT_API_KEY = $key' <target-path> > tmp.$$.json && mv tmp.$$.json <target-path>
+jq --arg key "<key>" '.env.CREDYT_API_KEY = $key' <target-path> > tmp.$$.json && mv tmp.$$.json <target-path>
 ```
 
 If `jq` is not installed, tell the user and suggest installing it (`brew install jq` on macOS, `apt install jq` on Linux) before retrying.
@@ -109,8 +107,8 @@ If the MCP call failed or the tool isn't available, help the user troubleshoot:
 >
 > - Have you restarted Claude Code since setting the variable?
 > - Check that `CREDYT_API_KEY` is present in your settings file (`~/.claude/settings.json` or `.claude/settings.local.json`) under the `env` block.
-> - The value should be in the format `Bearer key_...` — the `Bearer ` prefix is required.
+> - The value should be just the API key (e.g. `key_...`) — no `Bearer ` prefix.
 >
 > Would you like me to check the settings files for you, or would you prefer to re-enter your API key?"
 
-**Never** echo or print the API key value to the terminal. If the user wants to re-enter their key, go back to **Step 2a**. If they want you to check the files, read the relevant settings file and confirm whether `CREDYT_API_KEY` is present and correctly formatted (without outputting the full key — just confirm the format looks right, e.g. "starts with `Bearer key_` and is N characters long").
+**Never** echo or print the API key value to the terminal. If the user wants to re-enter their key, go back to **Step 2a**. If they want you to check the files, read the relevant settings file and confirm whether `CREDYT_API_KEY` is present and correctly formatted (without outputting the full key — just confirm the format looks right, e.g. "starts with `key_` and is N characters long").
