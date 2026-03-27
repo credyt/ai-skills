@@ -22,71 +22,70 @@ If it **is not** set, continue to Step 2.
 
 ## Step 2: Configure the API key
 
-### 2a: Get the API key from the user
+### 2a: Collect the API key
 
-Ask the user for their Credyt API key:
+Ask the user for their Credyt API key. It's in the **Developers** section of the Credyt dashboard. If they don't have an account, direct them to sign up at https://app.credyt.ai/api/sign-up.
 
-> "To connect to Credyt, I need your API key. You can find it in the **Developers** section of the Credyt dashboard.
->
-> Don't have an account yet? Sign up at [app.credyt.ai/api/sign-up](https://app.credyt.ai/api/sign-up) — it only takes a minute.
->
-> Please paste your API key below:"
+**Never** echo or print the API key value to the terminal.
 
-Wait for the user to provide the key.
+### 2b: Ask where to save
 
-Once received, normalise the key:
-- If it starts with `key_`, prepend `Bearer ` to get `Bearer key_...`
-- If it already starts with `Bearer `, use it as-is
+Ask the user where they'd like to save the key:
 
-### 2b: Choose where to save the key
+1. **Global** (`~/.claude/settings.json`) — applies to all your projects
+2. **Project** (`.claude/settings.local.json`) — this project only (gitignored)
 
-Ask the user:
+Accept `1` or `2`. Map `1` → `global`, `2` → `project`.
 
-> "Where would you like to save the API key?
->
-> 1. **Global** — `~/.claude/settings.json` (available in all projects)
-> 2. **Project** — `.claude/settings.local.json` (this project only, gitignored)
->
-> Reply with **1** or **2**:"
+### 2c: Save the key to the settings file
 
-Wait for their choice and resolve the target file path:
-- Choice 1: `~/.claude/settings.json` (expand `~` to the user's home directory)
-- Choice 2: `.claude/settings.local.json` (relative to the current working directory)
+Resolve the target path based on the user's choice:
+- **Global** → `~/.claude/settings.json`
+- **Project** → `.claude/settings.local.json`
 
-### 2c: Write the key to the settings file
+**Never** echo or print the API key value to the terminal.
 
-Read the target settings file:
+#### If the file does not exist
 
-- **File does not exist** — create it with:
-  ```json
-  {
-    "env": {
-      "CREDYT_API_KEY": "Bearer key_..."
-    }
+Create the parent directory, then write a new settings file. Substitute the real key value — do not write the literal placeholder:
+
+```bash
+mkdir -p <parent-directory>
+```
+
+Then write a new file at `<target-path>` using the Write tool with this content:
+
+```json
+{
+  "env": {
+    "CREDYT_API_KEY": "<key>"
   }
-  ```
+}
+```
 
-- **File exists, no `env` block** — parse the JSON and add an `env` key:
-  ```json
-  {
-    "env": {
-      "CREDYT_API_KEY": "Bearer key_..."
-    }
-  }
-  ```
+#### If the file exists
 
-- **File exists, `env` block exists, no `CREDYT_API_KEY`** — merge the key into the existing `env` block without modifying any other keys.
+Check whether `CREDYT_API_KEY` is already present:
 
-- **File exists, `CREDYT_API_KEY` already present** — before writing, confirm with the user:
-  > "A `CREDYT_API_KEY` is already set in that file. Would you like to overwrite it? (yes/no)"
+```bash
+grep -q '"CREDYT_API_KEY"' <target-path> && echo "exists" || echo "not set"
+```
 
-  If they say no, keep the existing value and continue. If yes, overwrite with the new key.
+If **already set**, ask the user whether they want to overwrite it. If they decline, keep the existing value and skip to Step 2d.
 
-Write the updated JSON back to the file, preserving formatting as much as possible (2-space indentation).
+If **not set** (or user confirms overwrite), merge the key into the existing file using `jq`, preserving all other settings:
+
+```bash
+jq --arg key "<key>" '.env.CREDYT_API_KEY = $key' <target-path> > tmp.$$.json && mv tmp.$$.json <target-path>
+```
+
+If `jq` is not installed, tell the user and suggest installing it (`brew install jq` on macOS, `apt install jq` on Linux) before retrying.
+
+Confirm to the user: "Your API key has been saved to `<resolved-path>`."
 
 ### 2d: Tell the user to restart
 
-> "Your API key has been saved to `<file path>`. **Please restart Claude Code** for the environment variable to take effect, then run `/credyt:init` again to complete setup."
+> "Your API key has been saved to `<resolved-path>`. **Please restart Claude Code** for the environment variable to take effect, then run `/credyt:init` again to complete setup."
 
 **Stop here.** The env var won't be available until restart, so do not proceed to MCP verification.
 
@@ -108,8 +107,8 @@ If the MCP call failed or the tool isn't available, help the user troubleshoot:
 >
 > - Have you restarted Claude Code since setting the variable?
 > - Check that `CREDYT_API_KEY` is present in your settings file (`~/.claude/settings.json` or `.claude/settings.local.json`) under the `env` block.
-> - The value should be in the format `Bearer key_...` — the `Bearer ` prefix is required.
+> - The value should be just the API key (e.g. `key_...`) — no `Bearer ` prefix.
 >
 > Would you like me to check the settings files for you, or would you prefer to re-enter your API key?"
 
-**Never** echo or print the API key value to the terminal. If the user wants to re-enter their key, go back to **Step 2a**. If they want you to check the files, read the relevant settings file and confirm whether `CREDYT_API_KEY` is present and correctly formatted (without outputting the full key — just confirm the format looks right, e.g. "starts with `Bearer key_` and is N characters long").
+**Never** echo or print the API key value to the terminal. If the user wants to re-enter their key, go back to **Step 2a**. If they want you to check the files, read the relevant settings file and confirm whether `CREDYT_API_KEY` is present and correctly formatted (without outputting the full key — just confirm the format looks right, e.g. "starts with `key_` and is N characters long").
