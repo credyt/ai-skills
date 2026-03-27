@@ -6,7 +6,7 @@
         "mcp-remote",
         "https://mcp.credyt.ai",
         "--header",
-        "Authorization:${CREDYT_API_KEY}"
+        "Authorization:Bearer ${CREDYT_API_KEY}"
       ]
     }
   }
