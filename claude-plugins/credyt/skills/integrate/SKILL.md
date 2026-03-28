@@ -1,1 +1,0 @@
-../../../../skills/integrate/SKILL.md

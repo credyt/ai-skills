@@ -1,5 +1,5 @@
 ---
-name: setup
+name: billing-setup
 description: Discover your billing model and configure products, assets, and pricing in Credyt via MCP. Run this after /credyt:init. Can be run multiple times to add products or adjust pricing. Automatically verifies the full billing cycle after configuration. Use when the user wants to set up billing, create products, configure pricing, add new billable activities, or change how they charge.
 ---
 
@@ -196,7 +196,7 @@ After all products are configured, automatically run a full billing cycle test. 
 
 > "Now let me verify everything works end-to-end by running a test billing cycle..."
 
-Run the verification against each product that was created or modified in this session. For each product, follow the six-step procedure in `skills/verify/references/procedure.md`.
+Run the verification against each product that was created or modified in this session. For each product, follow the six-step procedure in `skills/billing-verification/references/procedure.md`.
 
 If any step fails, explain what went wrong and help fix it, then re-run the verification for that product.
 
@@ -211,4 +211,4 @@ Summarize what was created and verified, then suggest next steps:
 > - [List products with pricing summary and verification status]
 > - [List vendors if created]
 >
-> Run `/credyt:integrate` when you're ready to wire this into your app, or `/credyt:setup` again to add more products."
+> Run `/credyt:billing-integration` when you're ready to wire this into your app, or `/credyt:billing-setup` again to add more products."

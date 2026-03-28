@@ -13,9 +13,9 @@ Credyt AI Skills — skill definitions for setting up, verifying, and integratin
 This is a **pure skill scaffold** — no build system, no tests, no application code. The repo contains only skill definitions (Markdown files), plugin metadata, and MCP configuration.
 
 - `skills/` — Shared skill definitions (the single source of truth):
-  - `setup/SKILL.md` — Guided pricing model discovery and product configuration
-  - `verify/SKILL.md` — End-to-end billing cycle test
-  - `integrate/SKILL.md` — Wire Credyt into application code
+  - `billing-setup/SKILL.md` — Guided pricing model discovery and product configuration
+  - `billing-verification/SKILL.md` — End-to-end billing cycle test
+  - `billing-integration/SKILL.md` — Wire Credyt into application code
 - `claude-plugins/credyt/` — Claude Code plugin:
   - `.claude-plugin/plugin.json` — Plugin metadata (name, version, author)
   - `.mcp.json` — MCP server config (auto-connects on plugin install)
@@ -25,7 +25,7 @@ This is a **pure skill scaffold** — no build system, no tests, no application 
 
 ## How It Works
 
-Each skill is a multi-step guided conversation (not automated scripts). They use Credyt MCP tools (`create_asset`, `create_product`, `simulate_usage`, `submit_events`, etc.) to interact with the Credyt API. The recommended user flow is: `init` → `setup` → `verify` → `integrate`.
+Each skill is a multi-step guided conversation (not automated scripts). They use Credyt MCP tools (`create_asset`, `create_product`, `simulate_usage`, `submit_events`, etc.) to interact with the Credyt API. The recommended user flow is: `init` → `billing-setup` → `billing-verification` → `billing-integration`.
 
 ## Authentication
 

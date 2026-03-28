@@ -4,7 +4,7 @@ description: Set up your Credyt account and verify the MCP connection. Run this 
 
 # Credyt Init
 
-Get the user connected to Credyt so they can use `/credyt:setup`, `/credyt:verify`, and `/credyt:integrate`.
+Get the user connected to Credyt so they can use `/credyt:billing-setup`, `/credyt:billing-verification`, and `/credyt:billing-integration`.
 
 ## Step 1: Check for API key in the environment
 
@@ -95,7 +95,7 @@ Try calling `credyt:list_assets`. If it works, the MCP is connected and authenti
 
 If connected, tell the user:
 
-> "You're connected to Credyt. You can run `/credyt:setup` to configure your products and pricing."
+> "You're connected to Credyt. You can run `/credyt:billing-setup` to configure your products and pricing."
 
 And stop here — they're done.
 
