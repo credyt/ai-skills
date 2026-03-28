@@ -1,0 +1,1 @@
+../../../../skills/pricing-strategy/SKILL.md
