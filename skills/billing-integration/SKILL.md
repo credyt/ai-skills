@@ -1,6 +1,6 @@
 ---
-name: integrate
-description: Wire Credyt billing into your application code. Adds customer creation to registration, usage event tracking, balance checks, cost tracking, and billing portal links. Run after /credyt:setup and /credyt:verify. Use when the user wants to add Credyt to their app, integrate billing, send events from code, show balances, or add a billing page.
+name: billing-integration
+description: Wire Credyt billing into your application code. Adds customer creation to registration, usage event tracking, balance checks, cost tracking, and billing portal links. Run after /credyt:billing-setup and /credyt:billing-verification. Use when the user wants to add Credyt to their app, integrate billing, send events from code, show balances, or add a billing page.
 ---
 
 # Credyt Integrate
@@ -67,7 +67,7 @@ For **dimensional** products, include the dimension values (e.g., `model: "gpt-4
 
 ### 4. Cost tracking (if they set up vendors)
 
-If the user set up vendors in `/credyt:setup`, add cost data to usage events. Each event can include a `costs` array with the vendor ID, the amount it cost, and the currency.
+If the user set up vendors in `/credyt:billing-setup`, add cost data to usage events. Each event can include a `costs` array with the vendor ID, the amount it cost, and the currency.
 
 This is typically added right after the billable action completes, when the cost is known (e.g., after receiving the response from an AI API that includes token counts).
 
