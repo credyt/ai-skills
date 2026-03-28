@@ -41,6 +41,18 @@ Key points:
 - Store the Credyt customer ID in their database alongside the user record
 - Handle the case where the customer already exists (409/422 — look up by external_id instead)
 
+**Recurring fixed fees — pending subscriptions**
+
+If the product uses a recurring fixed fee (e.g. $20/month), the customer must pay upfront before their subscription activates. In this case the API returns a `pending` status rather than activating immediately.
+
+When the response status is `pending`:
+- Check the `required_actions` array for an action with `type: "payment"` and extract its `redirect_url`
+- Redirect the customer to that URL so they can enter their card details — include a `return_url` (where to send them on success) and a `failure_url` (where to send them if payment fails)
+- Do not activate the user's account yet — store it as pending in your database until payment is confirmed
+- If the redirect link expires before the customer completes payment, fetch the customer by their Credyt ID to get a refreshed link
+
+Once the customer pays, Credyt fires a `subscription.activated` webhook. Listen for this event on your backend and use it to activate the user's account.
+
 ### 3. Usage event tracking
 
 Find where the billable activities happen in their code and add event submission after each one. Each event needs:
