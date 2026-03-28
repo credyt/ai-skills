@@ -1,0 +1,16 @@
+name: Install Credyt Skills
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install credyt skills
+        run: |
+          mkdir -p /tmp/credyt-skills-install
+          cd /tmp/credyt-skills-install
+          npx skills add credyt/ai-skills --all
