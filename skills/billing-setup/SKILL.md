@@ -1,6 +1,6 @@
 ---
 name: billing-setup
-description: Discover your billing model and configure products, assets, and pricing in Credyt via MCP. Run this after /credyt:init. Can be run multiple times to add products or adjust pricing. Automatically verifies the full billing cycle after configuration. Use when the user wants to set up billing, create products, configure pricing, add new billable activities, or change how they charge.
+description: Discover your billing model and configure products, assets, and pricing in Credyt via MCP. Can be run multiple times to add products or adjust pricing. Automatically verifies the full billing cycle after configuration. Use when the user wants to set up billing, create products, configure pricing, add new billable activities, or change how they charge.
 ---
 
 # Credyt Setup

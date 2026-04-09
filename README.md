@@ -17,13 +17,13 @@ npx add-mcp \
 **2. Add the skills:**
 
 ```bash
-npx skills add credyt/ai-skills
+npx skills add credyt/ai-tools
 ```
 
 Or install a specific skill:
 
 ```bash
-npx skills add credyt/ai-skills --skill billing-setup
+npx skills add credyt/ai-tools --skill billing-setup
 ```
 
 ### Available skills
@@ -41,8 +41,8 @@ npx skills add credyt/ai-skills --skill billing-setup
 
 This repo provides the same skills in two ways:
 
-- **skills.sh** (`npx skills add credyt/ai-skills`) — works with any AI agent that supports MCP.
-- **Claude Code plugin** (`/plugin install credyt@credyt/ai-skills`) — makes skills available as slash commands in Claude Code.
+- **skills.sh** (`npx skills add credyt/ai-tools`) — works with any AI agent that supports MCP.
+- **Claude Code plugin** (`/plugin install credyt@credyt/ai-tools`) — makes skills available as slash commands in Claude Code.
 
 Either way, connect the Credyt MCP server first with `npx add-mcp`.
 
@@ -81,15 +81,15 @@ npx add-mcp \
 **From GitHub** — run these two commands inside Claude Code:
 
 ```
-/plugin marketplace add credyt/ai-skills
-/plugin install credyt@credyt/ai-skills
+/plugin marketplace add credyt/ai-tools
+/plugin install credyt@credyt/ai-tools
 ```
 
 **From a local clone:**
 
 ```bash
-git clone https://github.com/credyt/ai-skills
-claude --plugin-dir ./ai-skills/claude-plugins/credyt
+git clone https://github.com/credyt/ai-tools
+claude --plugin-dir ./ai-tools/claude-plugins/credyt
 ```
 
 ### Usage

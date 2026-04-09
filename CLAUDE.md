@@ -33,11 +33,11 @@ Requires `CREDYT_API_KEY` environment variable set to `Bearer sk_...` format. Co
 
 ## Installation
 
-From marketplace: `/plugin marketplace add credyt/ai-skills` then `/plugin install credyt@credyt/ai-skills`
+From marketplace: `/plugin marketplace add credyt/ai-tools` then `/plugin install credyt@credyt/ai-tools`
 
 Local development: `claude --plugin-dir ./claude-plugins/credyt`
 
-Via skills.sh (any agent): `npx skills add credyt/ai-skills`
+Via skills.sh (any agent): `npx skills add credyt/ai-tools`
 
 ---
 

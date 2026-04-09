@@ -175,4 +175,4 @@ In this case: their existing PSP handles subscription payments; Credyt handles t
 
 Close with a clear next step:
 
-> "Ready to configure this? Run `/credyt:setup` to wire up your pricing in Credyt, or `/credyt:init` first if you haven't connected your account yet. If you don't have the Credyt skills installed yet, visit [github.com/credyt/ai-skills](https://github.com/credyt/ai-skills) for installation instructions."
+> "Ready to configure this? Run `/credyt:setup` to wire up your pricing in Credyt. If the MCP server isn't connected yet, add it with: `npx add-mcp https://mcp.credyt.ai --header \"Authorization: Bearer key_your_api_key_here\"`. Full setup instructions at [github.com/credyt/ai-tools](https://github.com/credyt/ai-tools)."

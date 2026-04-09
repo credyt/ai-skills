@@ -13,4 +13,4 @@ jobs:
         run: |
           mkdir -p /tmp/credyt-skills-install
           cd /tmp/credyt-skills-install
-          npx skills add credyt/ai-skills --all
+          npx skills add credyt/ai-tools --all
