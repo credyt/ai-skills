@@ -1,4 +1,4 @@
-# Credyt AI Skills
+# Credyt AI Tools
 
 Set up and integrate [Credyt](https://credyt.ai) — real-time monetization infrastructure for AI products — directly from your AI agent. Four skills guide you from pricing strategy through production integration.
 
