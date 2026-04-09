@@ -1,22 +1,30 @@
 # Credyt AI Skills
 
-Set up and integrate [Credyt](https://credyt.ai) — real-time monetization infrastructure for AI products — directly from your AI agent. Three skills guide you from first configuration through production integration.
+Set up and integrate [Credyt](https://credyt.ai) — real-time monetization infrastructure for AI products — directly from your AI agent. Four skills guide you from pricing strategy through production integration.
 
 ## Quick install (any AI agent)
 
-Install skills for Claude Code, Cursor, Codex, Gemini, Copilot, and other agents:
+Install for Claude Code, Cursor, Codex, Gemini, Copilot, and other agents:
 
+**1. Connect the Credyt MCP server** — get an API key at [app.credyt.ai](https://app.credyt.ai/api/sign-up), then run:
+
+```bash
+npx add-mcp \
+  https://mcp.credyt.ai \
+  --header "Authorization: Bearer key_your_api_key_here"
 ```
+
+**2. Add the skills:**
+
+```bash
 npx skills add credyt/ai-skills
 ```
 
 Or install a specific skill:
 
-```
+```bash
 npx skills add credyt/ai-skills --skill billing-setup
 ```
-
-The skills use the Credyt MCP server. Connect it in your tool at `https://mcp.credyt.ai` with your API key as a Bearer token in the Authorization header. Get an API key at [app.credyt.ai](https://app.credyt.ai/api/sign-up).
 
 ### Available skills
 
@@ -33,20 +41,17 @@ The skills use the Credyt MCP server. Connect it in your tool at `https://mcp.cr
 
 This repo provides the same skills in two ways:
 
-- **skills.sh** (`npx skills add credyt/ai-skills`) — works with any AI agent that supports MCP. You connect the Credyt MCP server yourself.
-- **Claude Code plugin** (`/plugin install credyt@credyt/ai-skills`) — bundles the MCP server config so it auto-connects on install, and includes `/credyt:init` for guided API key setup.
+- **skills.sh** (`npx skills add credyt/ai-skills`) — works with any AI agent that supports MCP.
+- **Claude Code plugin** (`/plugin install credyt@credyt/ai-skills`) — makes skills available as slash commands in Claude Code.
 
-The skills are identical — the plugin adds MCP auto-configuration and a guided init command for Claude Code users.
+Either way, connect the Credyt MCP server first with `npx add-mcp`.
 
 ---
 
 ## Claude Code plugin
 
-The plugin also connects to the **Credyt MCP server** (`mcp.credyt.ai`), which exposes the Credyt API as tools Claude can call directly — creating products, sending events, checking wallets, and more.
+The plugin makes Credyt skills available as slash commands in Claude Code and lists on the Anthropic marketplace. Connect the MCP server separately with `npx add-mcp` (see above).
 
-| Type    | Name                | What it does                                                                                                                                                                                                          |
-| ------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Command | `/credyt:init`                 | Gets you connected to Credyt. Creates an account, configures the API key, and verifies the MCP connection. Run this first.                                                                                            |
 | Skill   | `/credyt:billing-setup`        | Discovers your billing model through a guided conversation, then configures products, assets, and pricing in Credyt via MCP. Runs a full end-to-end billing cycle verification automatically.                         |
 | Skill   | `/credyt:billing-verification` | Tests the full billing cycle for a specific product — creates a test customer, funds their wallet, sends a usage event, and confirms the fee was charged correctly. Use this after making changes or to troubleshoot. |
 | Skill   | `/credyt:billing-integration`  | Wires Credyt into your application code. Adds customer creation at signup, usage event tracking, balance checks, cost tracking, billing portal links, and balance display.                                            |
@@ -59,46 +64,15 @@ The plugin also connects to the **Credyt MCP server** (`mcp.credyt.ai`), which e
 2. Open the **Developers** section in the dashboard
 3. Copy your API key
 
-#### 2. Set the API key
+#### 2. Connect the MCP server
 
-**Claude Code** — run `/credyt:init` after installing the plugin. It will guide you through entering your API key and verify the MCP connection is working.
-
-<details>
-<summary>Manual setup</summary>
-
-Add the key to a Claude settings file so it's available to the MCP server.
-
-**Option 1 — Global (all projects):** Add to `~/.claude/settings.json`:
-
-```json
-{
-  "env": {
-    "CREDYT_API_KEY": "Bearer sk_your_api_key_here"
-  }
-}
-```
-
-**Option 2 — Project-scoped (not checked into source control):** Add to `.claude/settings.local.json` in your project directory:
-
-```json
-{
-  "env": {
-    "CREDYT_API_KEY": "Bearer sk_your_api_key_here"
-  }
-}
-```
-
-Claude Code automatically adds this file to `.gitignore`, so each developer on a team can set their own key without it ending up in source control.
-
-**Option 3 — Terminal / shell profile:** Export the variable in your current session or add it to your shell profile (`~/.zshrc`, `~/.bashrc`, etc.):
+Use `add-mcp` to wire in the Credyt MCP server and set your API key:
 
 ```bash
-export CREDYT_API_KEY="Bearer sk_your_api_key_here"
+npx add-mcp \
+  https://mcp.credyt.ai \
+  --header "Authorization: Bearer key_your_api_key_here"
 ```
-
-To persist across sessions, add the line to your shell profile and run `source ~/.zshrc` (or restart your terminal).
-
-</details>
 
 #### 3. Install the plugin
 
@@ -116,19 +90,9 @@ git clone https://github.com/credyt/ai-skills
 claude --plugin-dir ./ai-skills/claude-plugins/credyt
 ```
 
-#### 4. Connect and verify
-
-Run `/credyt:init` in Claude Code. It will guide you through setting your API key (if you haven't already), confirm the MCP is connected, and walk you through any remaining setup.
-
 ### Usage
 
-Start here if you're new:
-
-```
-/credyt:init
-```
-
-Once connected, configure your billing:
+Configure your billing:
 
 ```
 /credyt:billing-setup
@@ -156,6 +120,20 @@ The guided skills (`billing-setup`, `billing-verification`, `billing-integration
 
 ### Connect the MCP server
 
+The fastest way is to use [`add-mcp`](https://github.com/neondatabase/add-mcp), which writes the config for you:
+
+```bash
+npx add-mcp "npx mcp-remote https://mcp.credyt.ai --header Authorization:\${CREDYT_API_KEY}" \
+  --name credyt \
+  --env "CREDYT_API_KEY=Bearer key_your_api_key_here" \
+  -a claude-desktop -y
+```
+
+Replace `key_your_api_key_here` with your key from [app.credyt.ai](https://app.credyt.ai/api/sign-up), then restart Claude Desktop.
+
+<details>
+<summary>Manual setup</summary>
+
 Open Settings → Developer → Edit config and add the Credyt entry:
 
 ```json
@@ -170,7 +148,7 @@ Open Settings → Developer → Edit config and add the Credyt entry:
         "Authorization:${CREDYT_API_KEY}"
       ],
       "env": {
-        "CREDYT_API_KEY": "Bearer sk_your_api_key_here"
+        "CREDYT_API_KEY": "Bearer key_your_api_key_here"
       }
     }
   }
@@ -178,6 +156,8 @@ Open Settings → Developer → Edit config and add the Credyt entry:
 ```
 
 Restart Claude Desktop after saving.
+
+</details>
 
 ---
 
