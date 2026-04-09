@@ -45,9 +45,15 @@ Key points:
 
 If the product uses a recurring fixed fee (e.g. $20/month), the customer must pay upfront before their subscription activates. In this case the API returns a `pending` status rather than activating immediately.
 
+Set `return_url`, `failure_url`, and `redirect_to` on the subscription creation call so Credyt knows where to send the customer after payment — before you ever redirect them anywhere:
+
+- `return_url` — where to send the customer after successful payment (e.g. `https://yourapp.com/account`)
+- `failure_url` — where to send them if payment fails (e.g. `https://yourapp.com/callbacks/payment-failed`)
+- `redirect_to` — set to `"return_url"` so the customer lands back on your site instead of staying in the Credyt billing portal (this is the default, but set it explicitly)
+
 When the response status is `pending`:
 - Check the `required_actions` array for an action with `type: "payment"` and extract its `redirect_url`
-- Redirect the customer to that URL so they can enter their card details — include a `return_url` (where to send them on success) and a `failure_url` (where to send them if payment fails)
+- Redirect the customer to that URL — Credyt will handle the payment form and route them to your `return_url` or `failure_url` automatically
 - Do not activate the user's account yet — store it as pending in your database until payment is confirmed
 - If the redirect link expires before the customer completes payment, fetch the customer by their Credyt ID to get a refreshed link
 
